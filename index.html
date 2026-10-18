@@ -1,0 +1,951 @@
+/* 
+To update:
+(In terminal)
+cd /Users/lukedulski/Downloads/lukedulskiphotography
+git add .
+git commit -m "New update"
+git push
+*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luke Dulski Photography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+  overscroll-behavior-y: none;
+}
+
+    :root {
+      --bg:       #0a0b0d;
+      --bg2:      #111318;
+      --bg3:      #181b22;
+      --border:   #252933;
+      --text:     #dde0e8;
+      --muted:    #6b7080;
+      --accent:   #5b9bd5;
+      --amber:    #ff9252;
+      --white:    #f5f6f8;
+      --radius:   4px;
+      --nav-h:    108px;
+      --gap:      10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,11,13,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.25rem, 5vw, 4rem);
+      z-index: 1000;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.82rem, 3.2vw, 1.15rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      text-decoration: none;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+      flex-shrink: 1;
+    }
+    .nav-brand em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted);
+    }
+    .nav-links { display: flex; gap: clamp(1rem, 3vw, 2.5rem); list-style: none; flex-shrink: 0; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: calc(var(--nav-h) + 3rem) clamp(1.25rem, 7vw, 5rem) 27vh;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      /* ── ADD YOUR HERO PHOTO ───────────────────────────────
+         Replace HERO.jpg with your filename (e.g. AV1.jpg).
+         The gradient shows as fallback if no photo is found.
+         ────────────────────────────────────────────────────── */
+      background-image: url('HERO.jpg');
+      background-size: cover;
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-color: #0b1422; /* fallback color */
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,11,13,0.95) 0%, rgba(10,11,13,0.1) 60%, transparent 100%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 680px; }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-family: 'Playfair Display', sans-serif;
+      font-size: clamp(3.2rem, 8.8vw, 6.5rem);
+      font-weight: 600;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.75rem;
+      line-height: 1.75;
+    }
+    .hero-cta {
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      background: transparent;
+      border: 1px solid rgba(91,155,213,0.5);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .hero-cta:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ── SECTION ── */
+    section { padding: 5rem clamp(1.25rem, 6vw, 5rem); }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+    .section-desc {
+      color: var(--muted);
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--bg); }
+    .gallery-header { margin-bottom: 0; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .tab {
+      padding: 0.4rem 1.1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .tab:hover { color: var(--text); border-color: var(--muted); }
+    .tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ── MASONRY GRID ──
+       Key fix: images use object-fit:cover in a fixed-height container,
+       so missing/loading images don't leave giant empty boxes.
+    ── */
+    .grid {
+      columns: 3;
+      column-gap: var(--gap);
+    }
+    @media (max-width: 960px) { .grid { columns: 2; } }
+    @media (max-width: 540px) { .grid { columns: 1; } }
+
+    .grid-item {
+      break-inside: avoid;
+      margin-bottom: var(--gap);
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--bg3);
+      cursor: pointer;
+      /* Hidden by default — JS or .visible class shows them */
+    }
+    /* Show all by default (All tab active) */
+    .grid-item { display: block; }
+    .grid-item.hidden { display: none; }
+
+    /* Fixed-ratio image wrapper — eliminates empty space */
+    .img-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 66.67%; /* 3:2 default ratio */
+      overflow: hidden;
+      background: var(--bg3);
+    }
+    .img-wrap.tall   { padding-top: 130%; }
+    .img-wrap.wide   { padding-top: 56%;  }
+    .img-wrap.square { padding-top: 100%; }
+
+    .img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+    .grid-item:hover .img-wrap img { transform: scale(1.04); }
+
+    /* Placeholder shown when image fails to load */
+    .img-placeholder {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: var(--border);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--bg3);
+      /* subtle grid texture */
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-position: center center;
+    }
+
+    .grid-item .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,11,13,0.88) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.28s;
+      display: flex; align-items: flex-end;
+      padding: 1rem;
+      pointer-events: none;
+    }
+    .grid-item:hover .overlay { opacity: 1; }
+    .overlay-caption {
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+    .overlay-caption span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+      margin-top: 0.15rem;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(10,11,13,0.97);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .lightbox.open { display: flex; }
+    .lb-img-wrap {
+      max-width: min(90vw, 1200px);
+      max-height: 85vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: var(--radius);
+      object-fit: contain;
+      box-shadow: 0 0 100px rgba(0,0,0,0.9);
+    }
+    .lb-close {
+      position: absolute; top: 1.25rem; right: 1.75rem;
+      color: var(--muted); font-size: 2rem; cursor: pointer;
+      line-height: 1; background: none; border: none;
+      transition: color 0.2s;
+    }
+    .lb-close:hover { color: var(--white); }
+    .lb-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,0.14); }
+    .lb-prev { left: 1.5rem; }
+    .lb-next { right: 1.5rem; }
+    .lb-caption {
+      position: absolute; bottom: 1.75rem;
+      color: var(--muted); font-size: 0.78rem;
+      text-align: center; width: 100%;
+      pointer-events: none; letter-spacing: 0.06em;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    .about-img-wrap {
+      aspect-ratio: 3/4;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg3);
+    }
+    .about-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .about-body {
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+      font-size: 0.92rem;
+    }
+    .gear-list {
+      list-style: none;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 2rem;
+      margin-top: 0.75rem;
+    }
+    .gear-list li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .gear-list li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--amber);
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+    .contact-inner { max-width: 520px; }
+    .contact-links { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.75rem clamp(1.25rem, 6vw, 5rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--text); }
+
+    /* ── SCROLL FADE ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-in.in-view { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { opacity: 1; transform: none; }
+      .img-wrap img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════ -->
+<nav>
+  <a class="nav-brand" href="#">Luke Dulski<br><em>Photography</em></a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Portfolio</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Luke Dulski · Colorado Springs</p>
+    <h1 class="hero-title">Caught<br>in<em> 4K</em></h1>
+    <p class="hero-sub">
+      Aviation, automotive, landscape, and night photography shot
+      in Colorado Springs and beyond.
+
+    </p>
+    <a href="#gallery" class="hero-cta">View Portfolio</a>
+  </div>
+</div>
+
+<!-- ══ GALLERY ═══════════════════════════════════════════ -->
+<section id="gallery">
+  <div class="gallery-header fade-in">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">Photos</h2>
+    <p class="section-desc">My best aviation, automotive, landscape, and night photography.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="aviation">Aviation</button>
+    <button class="tab" data-filter="automotive">Automotive</button>
+    <button class="tab" data-filter="landscape">Landscape</button>
+    <button class="tab" data-filter="night">Night</button>
+    <button class="tab" data-filter="more">More</button>
+  </div>
+
+  <!-- GRID
+       ─────────────────────────────────────────────────────────────────
+       HOW TO ADD MORE PHOTOS
+       • Copy any .grid-item block and change the src filename, alt text,
+         data-cat, data-caption, and .img-wrap aspect class.
+       • img-wrap classes: (default = 3:2)  tall = portrait  wide = 16:9  square = 1:1
+       • Naming convention used below:
+           AV1–AV5   aviation      CAR1–CAR5  automotive
+           LAN1–LAN5 landscape     NI1–NI5    night
+       ─────────────────────────────────────────────────────────────────
+  -->
+  <div class="grid" id="photoGrid">
+
+    <!-- ── AVIATION ─────────────────────────────────────── -->
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap">
+        <img src="AV1.jpg" alt="Aviation 1"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 01</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="AV2.jpg" alt="Aviation 2"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 02</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap">
+        <img src="AV3.jpg" alt="Aviation 3"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 03</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="AV4.jpg" alt="Aviation 4"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 04</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+
+        <div class="grid-item" data-cat="night" data-caption="Night · Colorado Springs">
+      <div class="img-wrap">
+        <img src="NI4.jpg" alt="Night 4"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">night · 04</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Night<span>Colorado Springs</span></div></div>
+    </div>
+
+
+       <div class="grid-item" data-cat="landscape" data-caption="Landscape · Arches National Park">
+      <div class="img-wrap">
+        <img src="LAN3.jpg" alt="Landscape 3"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 03</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Arches National Park</span></div></div>
+    </div>
+
+
+     <div class="grid-item" data-cat="landscape" data-caption="Landscape · Maui">
+      <div class="img-wrap">
+        <img src="LAN4.jpg" alt="Landscape 4"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 04</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Maui</span></div></div>
+    </div>
+
+
+    <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="CAR3.jpg" alt="Automotive 3"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 03</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="CAR4.jpg" alt="Automotive 4"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 04</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+
+    <div class="grid-item" data-cat="landscape" data-caption="Landscape · Leadville">
+      <div class="img-wrap">
+        <img src="LAN1.jpeg" alt="Landscape 1"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 01</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Leadville</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="landscape" data-caption="Landscape · Arches National Park">
+      <div class="img-wrap">
+        <img src="LAN2.jpg" alt="Landscape 2"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 02</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Arches National Park</span></div></div>
+    </div>
+
+
+    <!-- ── CARS ───────────────────────────────────────── -->
+    <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap">
+        <img src="CAR1.jpg" alt="Automotive 1"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 01</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+     <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap">
+        <img src="CAR6.jpg" alt="Automotive 6"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 06</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+
+     <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap">
+        <img src="CAR8.jpg" alt="Automotive 8"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 08</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+
+
+   <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap">
+        <img src="AV6.jpg" alt="Aviation 6"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 06</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+    
+    
+ <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap">
+        <img src="AV5.jpg" alt="Aviation 5"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 05</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+   
+
+    <!-- ── NIGHT ─────────────────────────────────────── -->
+
+          <div class="grid-item" data-cat="night" data-caption="Night · Colorado Springs">
+      <div class="img-wrap">
+        <img src="NI3.jpg" alt="Night 3"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">night · 03</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Night<span>Colorado Springs</span></div></div>
+    </div>
+
+
+
+    <div class="grid-item" data-cat="night" data-caption="Night · Colorado Springs">
+      <div class="img-wrap">
+        <img src="NI1.jpg" alt="Night 1"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">night · 01</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Night<span>Colorado Springs</span></div></div>
+    </div>
+
+    <div class="grid-item" data-cat="night" data-caption="Night · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="NI2.jpg" alt="Night 2"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">night · 02</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Night<span>Colorado Springs</span></div></div>
+    </div>
+
+
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="AV8.jpg" alt="Aviation 8"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 08</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+
+    <div class="grid-item" data-cat="aviation" data-caption="Aviation · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="AV7.jpg" alt="Aviation 7"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">aviation · 07</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Aviation<span>Colorado Springs</span></div></div>
+    </div>
+
+
+
+        <div class="grid-item" data-cat="landscape" data-caption="Landscape · Colorado Springs">
+      <div class="img-wrap">
+        <img src="LAN6.jpg" alt="Landscape 6"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 06</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Colorado Springs</span></div></div>
+    </div>
+
+
+         <div class="grid-item" data-cat="landscape" data-caption="Landscape · Canyonlands National Park">
+      <div class="img-wrap wide">
+        <img src="LAN5.jpg" alt="Landscape 5"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">landscape · 05</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Landscape<span>Canyonlands National Park</span></div></div>
+    </div>
+
+
+         <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="CAR5.jpg" alt="Automotive 5"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 05</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+
+         <div class="grid-item" data-cat="automotive" data-caption="Automotive · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="CAR7.jpg" alt="Automotive 7"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">automotive · 07</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">Automotive<span>Colorado Springs</span></div></div>
+    </div>
+
+
+     <div class="grid-item" data-cat="more" data-caption="More · Colorado Springs">
+      <div class="img-wrap wide">
+        <img src="MORE1.jpg" alt="More 1"
+             onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+        <div class="img-placeholder">more · 01</div>
+      </div>
+      <div class="overlay"><div class="overlay-caption">More<span>Colorado Springs</span></div></div>
+    </div>
+
+
+
+  </div><!-- /grid -->
+</section>
+
+<!-- ══ ABOUT ══════════════════════════════════════════════ -->
+<section id="about">
+  <div class="about-grid fade-in">
+    <div class="about-img-wrap">
+      <img src="PROF.jpeg" alt="Luke Dulski portrait"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="about-text">
+      <p class="section-label">About Me</p>
+      <h2 class="section-title">Luke Dulski</h2>
+      <!-- ← Edit the paragraphs below with your own bio -->
+      <p class="about-body">
+        Based in Colorado Springs, I photograph various subjects and I enjoy experimenting
+        with different lighting and camera settings. I use Lightroom to edit my photos
+        and my primary camera is the Sony RX 10 IV. 
+      </p>
+      <p class="about-body">
+        Over the years, I have refined my photography skills and more recently stared editing my photos
+        with professional software. In doing so, I hope to create more polished work and become a more versatile photographer.
+      </p>
+      <p class="section-label" style="margin-top:1.5rem;">Gear</p>
+      <!-- ← Edit with your actual equipment -->
+      <ul class="Camera">
+        <li>Sony RX 10 IV</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-inner fade-in">
+    <p class="section-label">Work With Me</p>
+    <h2 class="section-title">Contact</h2>
+    <p class="section-desc">
+      I would love the opportuity to work with you! Please contact me at the email below for general inquiries.
+    </p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:lukedulski2@gmail.com">✉ lukedulski2@gmail.com</a>
+      <a class="contact-link" href="https://instagram.com/dulski_photo" target="_blank" rel="noopener">
+        &#x1F4F7; @dulski_photo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════ -->
+<footer>
+  <span>© <span id="yr"></span> Luke Dulski Photography — Colorado Springs, CO</span>
+  <a href="#">↑ Back to top</a>
+</footer>
+
+<!-- ══ LIGHTBOX ══════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+  <div class="lb-img-wrap">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
+  <p class="lb-caption" id="lbCaption"></p>
+</div>
+
+<!-- ══ SCRIPTS ═══════════════════════════════════════════ -->
+<script>
+  // Year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ── Category filter ──────────────────────────────────
+  const tabs  = document.querySelectorAll('.tab');
+  const items = document.querySelectorAll('.grid-item');
+
+  function applyFilter(filter) {
+    items.forEach(item => {
+      const match = filter === 'all' || item.dataset.cat === filter;
+      item.classList.toggle('hidden', !match);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyFilter(tab.dataset.filter);
+    });
+  });
+
+  // ── Lightbox ─────────────────────────────────────────
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lbImg');
+  const lbCap    = document.getElementById('lbCaption');
+  let visibleItems = [];
+  let currentIdx  = 0;
+
+  function getVisible() {
+    return [...document.querySelectorAll('.grid-item:not(.hidden) .img-wrap img')]
+      .filter(img => img.src && !img.src.endsWith('/') && img.style.display !== 'none');
+  }
+
+  function openLightbox(imgEl, caption) {
+    visibleItems = getVisible();
+    currentIdx = visibleItems.indexOf(imgEl);
+    lbImg.src = imgEl.src;
+    lbImg.alt = imgEl.alt;
+    lbCap.textContent = caption || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function shiftLightbox(dir) {
+    visibleItems = getVisible();
+    if (!visibleItems.length) return;
+    currentIdx = (currentIdx + dir + visibleItems.length) % visibleItems.length;
+    const next = visibleItems[currentIdx];
+    if (next) { lbImg.src = next.src; lbImg.alt = next.alt; }
+  }
+
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('.img-wrap img');
+      if (img && img.src && !img.src.endsWith('/') && img.style.display !== 'none') {
+        openLightbox(img, item.dataset.caption);
+      }
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => shiftLightbox(-1));
+  document.getElementById('lbNext').addEventListener('click', () => shiftLightbox(1));
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  shiftLightbox(-1);
+    if (e.key === 'ArrowRight') shiftLightbox(1);
+  });
+
+  // ── Scroll fade-in ────────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
